@@ -12,11 +12,19 @@ namespace RepositoryLayer.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
+        [Required]
+        [RegularExpression("^[A-Z][A-Z a-z]{2,}$")]
         public string FirstName { get; set; }
+        [Required]
+        [RegularExpression("^[A-Z][A-Z a-z]{2,}$")]
         public string LastName { get; set; }
+        [Required]
+        [RegularExpression(@"^[A-Z][A-Z a-z]{2,}[@][a-z A-z]{2,6}[.][a-z]{3}$")]
         public string Email { get; set; }
-        public string Password { get; set; }
-        public DateTime? CreatedAt { get; set; }  //Nullable
+        [Required]
+        [RegularExpression("^[A-Z][A-Z a-z 1-0]{2,}$")]
+        public String Password { get; set; }
+        public DateTime? CreatedAt { get; set; }  
         public DateTime? ModifiedAt { get; set; }
     }
 }
