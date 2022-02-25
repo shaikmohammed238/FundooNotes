@@ -19,7 +19,7 @@ namespace RepositoryLayer.Entities
         [RegularExpression("^[A-Z][A-Z a-z]{2,}$")]
         public string LastName { get; set; }
         [Required]
-        [RegularExpression(@"^[A-Z][A-Z a-z]{2,}[@][a-z A-z]{2,6}[.][a-z]{3}$")]
+        [RegularExpression(@"^[A-Z a-z]{2,}[@][a-z A-z]{2,6}[.][com]$")]
         public string Email { get; set; }
         [Required]
         [RegularExpression("^[A-Z][A-Z a-z 1-0]{2,}$")]
