@@ -1,10 +1,12 @@
 ﻿using BussinessLayer.Interfaces;
 using CommonLayer.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -26,10 +28,10 @@ namespace FundooNotes.Controllers
                 var result = userBL.Registration(userRegModel);
                 if (result != null)
                 {
-                    return this.Ok(new { success = true, message = "Registration Successful", data = result });
+                    return this.Ok(new { isSuccess = true, message = "Registration Successful", data = result });
                 }
                 else
-                    return this.BadRequest(new { success = false, message = "Registration Unsuccessful" });
+                    return this.BadRequest(new { isSuccess = false, message = "Registration Unsuccessful" });
             }
             catch (Exception)
             {
@@ -37,31 +39,13 @@ namespace FundooNotes.Controllers
             }
         }
 
-        /// <summary>
-        /// Only for Email Login
-        /// </summary>
-        /// <param name="userLogin"></param>
-        /// <returns></returns>
-        //[HttpPost("Login")]
-        //public IActionResult LoginUser(UserLoginModel userLogin)
-        //{
-        //    try
-        //    {
-        //        var result = userBL.Login(userLogin);
-        //        if (result != null)
-        //        {
-        //            return this.Ok(new { success = true, message = "Login Successful", data = result });
-        //        }
-        //        else
-        //            return this.BadRequest(new { success = false, message = "Login Unsuccessful" });
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
 
-        [HttpPost("AllLogin")]
+        /// <summary>
+        /// Get all Login Data
+        /// </summary>
+        /// <param name="userLog"></param>
+        /// <returns></returns>
+        [HttpPost("Login")]
         public IActionResult UserLogin(UserLoginModel userLog)
         {
             try
@@ -69,10 +53,10 @@ namespace FundooNotes.Controllers
                 var result = userBL.UserLogin(userLog);
                 if (result != null)
                 {
-                    return this.Ok(new { success = true, message = "Login Successful", data = result });
+                    return this.Ok(new { isSuccess = true, message = "Login Successful", data = result });
                 }
                 else
-                    return this.BadRequest(new { success = false, message = "Login Unsuccessful" });
+                    return this.BadRequest(new { isSuccess = false, message = "Login Unsuccessful" });
             }
             catch (Exception)
             {
@@ -80,6 +64,45 @@ namespace FundooNotes.Controllers
             }
         }
 
+        [HttpPost("ForgotPassword")]
+        public IActionResult ForgotPassword(string email)
+        {
+            try
+            {
+                var result = userBL.ForgetPassword(email);
+                if (result != null)
+                {
+                    return this.Ok(new { isSuccess = true, message = "Send Forget Password Link" });
+                }
+                else
+                    return this.BadRequest(new { isSuccess = false, message = "Email not Found" });
+            }
+            catch (Exception e)
+            {
+
+                return this.BadRequest(new { isSuccess = false, message = e.InnerException.Message });
+            }
+        }
+
+
+        [Authorize]
+        [HttpPost("ResetPassword")]
+
+        public IActionResult ResetPassword(string password, string confirmPassword)
+        {
+            try
+            {
+                var email = User.FindFirst(ClaimTypes.Email).Value.ToString();
+                var result = userBL.ResetPassword(email, password, confirmPassword);
+                return this.Ok(new { isSuccess = true, message = "Reset Password Successfully" });
+
+            }
+            catch (Exception e)
+            {
+
+                return this.BadRequest(new { isSuccess = false, message = e.InnerException.Message });
+            }
+        }
 
     }
 }

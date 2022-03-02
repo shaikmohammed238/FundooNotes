@@ -15,5 +15,10 @@ namespace RepositoryLayer.Interface
         /// <param name="userLog"></param>
         /// <returns></returns>
         public LoginResponseModel UserLogin(UserLoginModel userLog);
+        //using for forget password
+        public string ForgetPassword(string email);
+        //using for reset password
+        public bool ResetPassword(string email, string password, string confirmPassword);
+
     }
 }
