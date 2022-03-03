@@ -226,6 +226,12 @@ namespace FundooNotes.Controllers
                 return this.BadRequest(new { Status = false, Message = s.Message, InnerException = s.InnerException });
             }
         }
+        /// <summary>
+        /// api for change colour
+        /// </summary>
+        /// <param name="varColour"></param>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
         [HttpPatch("ChangeColour")]
         public IActionResult ChangeColour( string varColour, long noteId)
         {
@@ -247,6 +253,35 @@ namespace FundooNotes.Controllers
                 return this.BadRequest(new { Status = false, Message = s.Message, InnerException = s.InnerException });
             }
 
+        }
+        /// <summary>
+        /// background image api
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        [HttpPatch("Add Bacground Image")]
+        public IActionResult BackImg(IFormFile url, long noteId)
+        {
+            try
+            {
+                
+                    long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                    var result = this.noteBL.BackImg(url, noteId);
+                    if (result != null)
+                    {
+                        return this.Ok(new { success = true, message = " Image Successful", data = result });
+                    }
+                    else
+                    {
+                        return this.NotFound(new { isSuccess = false, message = " not added img" });
+                    }
+                
+            }
+            catch (Exception s)
+            {
+                return this.BadRequest(new { Status = false, Message = s.Message, InnerException = s.InnerException });
+            }
         }
     }        
 }       

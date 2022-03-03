@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Models;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -59,5 +60,12 @@ namespace RepositoryLayer.Interface
         /// <param name="noteId"></param>
         /// <returns></returns>
         public string ChangeColour(string varColour, long noteId);
+        /// <summary>
+        /// interface of backimg reposirory layer
+        /// </summary>
+        /// <param name="bimgurl"></param>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public string BackImg(IFormFile url, long noteId);
     }
 }
