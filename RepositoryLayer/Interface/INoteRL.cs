@@ -58,6 +58,6 @@ namespace RepositoryLayer.Interface
         /// </summary>
         /// <param name="noteId"></param>
         /// <returns></returns>
-        public string ChangeColour(NotesModel notesModel, long noteId);
+        public string ChangeColour(string varColour, long noteId);
     }
 }

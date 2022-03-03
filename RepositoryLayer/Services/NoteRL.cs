@@ -267,7 +267,7 @@ namespace RepositoryLayer.Services
         /// </summary>
         /// <param name="noteId"></param>
         /// <returns></returns>
-        public string ChangeColour(NotesModel notesModel, long noteId)
+        public string ChangeColour(string varColour, long noteId)
         {
             try
             {
@@ -275,7 +275,7 @@ namespace RepositoryLayer.Services
 
                 if (notecolour != null)
                 {
-                    notecolour.Colour = notesModel.Colour;
+                    notecolour.Colour = varColour;
                     fundooContext.NotesTables.Update(notecolour);
                     this.fundooContext.SaveChanges();
                     return "colour Changed Successfully";

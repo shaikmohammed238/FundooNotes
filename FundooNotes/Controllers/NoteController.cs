@@ -227,12 +227,12 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPatch("ChangeColour")]
-        public IActionResult ChangeColour( NotesModel notesModel,long noteId)
+        public IActionResult ChangeColour( string varColour, long noteId)
         {
             try
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(X => X.Type == "Id").Value);
-                var result = this.noteBL.ChangeColour(notesModel, noteId);
+                var result = this.noteBL.ChangeColour(varColour, noteId);
                 if (result != null)
                 {
                     return this.Ok(new { success = true, message = "colour Updated Successful", data = result });

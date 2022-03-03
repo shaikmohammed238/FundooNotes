@@ -25,6 +25,6 @@ namespace BussinessLayer.Interfaces
         //interface of bussniess layer Pinned Note
         public bool Pinned(long noteId);
         //interface of bussniess layer Notecolour
-        public string ChangeColour(NotesModel notesModel, long noteId);
+        public string ChangeColour(string varColour, long noteId);
     }
 }
