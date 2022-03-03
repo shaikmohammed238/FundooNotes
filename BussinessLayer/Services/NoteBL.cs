@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Interfaces;
 using CommonLayer.Models;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Entities;
 using RepositoryLayer.Interface;
 using System;
@@ -120,6 +121,18 @@ namespace BussinessLayer.Services
             try
             {
                 return noteRL.ChangeColour(varColour, noteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        //Bussiness layer of backimg 
+        public string BackImg(IFormFile url, long noteId)
+        {
+            try
+            {
+                return noteRL.BackImg(url, noteId);
             }
             catch (Exception)
             {

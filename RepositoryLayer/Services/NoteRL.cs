@@ -1,4 +1,7 @@
-﻿using CommonLayer.Models;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
+using CommonLayer.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
@@ -15,10 +18,12 @@ namespace RepositoryLayer.Services
     {
         private readonly FundooContext fundooContext;
         IConfiguration _Appsettings;
-        public NoteRL(FundooContext fundooContext,IConfiguration _Appsettings)
+        IConfiguration config;
+        public NoteRL(FundooContext fundooContext,IConfiguration _Appsettings,IConfiguration config)
         {
             this.fundooContext = fundooContext;
             this._Appsettings = _Appsettings;
+            this.config = config;
 
         }
 
@@ -290,6 +295,55 @@ namespace RepositoryLayer.Services
                 {
                     throw;
                 }
+            }
+        }
+        /// <summary>
+        /// method for add background image
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public string BackImg(IFormFile url, long noteId)
+        {
+            try
+            {
+
+                if (noteId > 0)
+                {
+                    var result = this.fundooContext.NotesTables.Where(x => x.NoteId == noteId).FirstOrDefault();
+                    if (result != null)
+                    {
+                        Account acc = new Account(
+                           _Appsettings["Cloudinary:cloud_name"],
+                           _Appsettings["Cloudinary:api_key"],
+                           _Appsettings["Cloudinary:api_secret"]
+                           );
+                        Cloudinary Cld = new Cloudinary(acc);
+                        var path = url.OpenReadStream();
+                        ImageUploadParams upLoadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription(url.FileName, path)
+                        };
+                        var UploadResult = Cld.Upload(upLoadParams);
+                        result.BackImg = UploadResult.Url.ToString();
+                        result.ModifiedAt = DateTime.Now;
+                        this.fundooContext.SaveChangesAsync();
+                        return "added background image ";
+                    }
+                    else
+                    {
+                        return "background image is not added";
+                    }
+                }
+                else
+                {
+                    return "check note id";
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }

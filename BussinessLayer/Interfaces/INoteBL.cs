@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Models;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -26,5 +27,7 @@ namespace BussinessLayer.Interfaces
         public bool Pinned(long noteId);
         //interface of bussniess layer Notecolour
         public string ChangeColour(string varColour, long noteId);
+        //interface of bussniess layer add back img
+        public string BackImg(IFormFile url, long noteId);
     }
 }
