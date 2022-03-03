@@ -8,9 +8,23 @@ namespace BussinessLayer.Interfaces
 {
     public interface INoteBL
     {
+        //interface of bussniess layer create note
         public Note CreateNote(NotesModel notesModel, long userId);
+        //interface of bussniess layer GetAllNote
         public IEnumerable<Note> GetAllNote(long userId);
-        public bool DeleteNote(long noteId);
-        public bool UpdateNote(Note note, long userId);
+        //interface of bussniess layer GetSingle note
+        public IEnumerable<Note> GetSingle(long NoteId);
+        //interface of bussniess layer Update note
+        public bool Update(NotesModel notesModel, long NoteId);
+        //interface of bussniess layer RemoveNotes
+        public bool RemoveNotes(long noteId);
+        //interface of bussniess layer Deletenote
+        public bool Delete(long noteId);
+        //interface of bussniess layer Archivenote
+        public bool Archive(long noteId);
+        //interface of bussniess layer Pinned Note
+        public bool Pinned(long noteId);
+        //interface of bussniess layer Notecolour
+        public string ChangeColour(NotesModel notesModel, long noteId);
     }
 }

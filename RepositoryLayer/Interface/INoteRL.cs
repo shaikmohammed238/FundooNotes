@@ -12,7 +12,52 @@ namespace RepositoryLayer.Interface
         public Note CreateNote(NotesModel notesModel, long userId);
         //get all notes
         public IEnumerable<Note> GetAllNote(long userId);
-        public bool DeleteNote(long noteId);
-        public bool UpdateNote(Note note, long userId);
+        /// <summary>
+        /// getsingle note id
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public IEnumerable<Note> GetSingle(long noteId);
+
+        /// <summary>
+        /// interface of delete reposirory layer
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public bool Delete(long noteId);
+
+        /// <summary>
+        /// interface of update reposirory layer
+        /// </summary>
+        /// <param name="notesModel"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool Update(NotesModel notesModel, long NoteId);
+
+        /// <summary>
+        /// interface of Remove notes reposirory layer
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public bool RemoveNotes(long noteId);
+        /// <summary>
+        /// interface of Archive notes reposirory layer
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public bool Archive(long noteId);
+
+        /// <summary>
+        /// interface of pinned notes reposirory layer
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public bool Pinned(long noteId);
+        /// <summary>
+        /// interface of notescolour reposirory layer
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public string ChangeColour(NotesModel notesModel, long noteId);
     }
 }
