@@ -1,4 +1,5 @@
 ﻿using CommonLayer.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entities;
@@ -106,5 +107,30 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+
+        public bool UpdateNote(Note note, long userId)
+        {
+            try
+            {
+                var updatenote = this.fundooContext.NotesTables.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
+                if (updatenote!= null)
+                {
+                    updatenote.Tittle = note.Tittle;
+                    updatenote.Body = note.Body;
+                    updatenote.Colour = note.Colour;
+                    updatenote.ModifiedAt = DateTime.Now;
+                    updatenote.BackImg = note.BackImg;
+                    this.fundooContext.SaveChanges();
+                    return true;
+                }
+                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
