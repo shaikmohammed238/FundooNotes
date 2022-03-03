@@ -13,5 +13,6 @@ namespace RepositoryLayer.Interface
         //get all notes
         public IEnumerable<Note> GetAllNote(long userId);
         public bool DeleteNote(long noteId);
+        public bool UpdateNote(Note note, long userId);
     }
 }

@@ -103,5 +103,22 @@ namespace FundooNotes.Controllers
             }
 
         }
+        [HttpPatch("UpdateNote")]
+        public IActionResult UpdateNote(Note note)
+        {
+            try
+            {
+                long userId = Convert.ToInt64(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var result = this.noteBL.UpdateNote(note,userId);
+                return this.Ok(new { isSuccess = true, message = "note is updated" });
+                
+            }
+            catch (Exception)
+            {
+
+                return this.BadRequest(new { isSuccess = false, message = "note failed to update" });
+            }
+        }
+        [HttpPatch("U")]
     }
 }

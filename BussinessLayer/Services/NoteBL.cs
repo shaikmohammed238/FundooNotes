@@ -51,5 +51,19 @@ namespace BussinessLayer.Services
                 throw;
             }
         }
+
+        public bool UpdateNote(Note note, long userId)
+        {
+            try
+            {
+                return noteRL.UpdateNote( );
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+      
     }
 }
