@@ -56,7 +56,7 @@ namespace BussinessLayer.Services
         {
             try
             {
-                return noteRL.UpdateNote( );
+                return noteRL.UpdateNote(note,userId);
             }
             catch (Exception)
             {

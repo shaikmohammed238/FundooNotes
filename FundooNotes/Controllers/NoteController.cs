@@ -119,6 +119,6 @@ namespace FundooNotes.Controllers
                 return this.BadRequest(new { isSuccess = false, message = "note failed to update" });
             }
         }
-        [HttpPatch("U")]
+       // [HttpPatch("U")]
     }
 }
