@@ -24,16 +24,21 @@ namespace FundooNotes.Controllers
             this.noteBL = noteBL;
             this.fundooContext = fundooContext;
         }
-        [HttpPost("CreateNote")]
-        public IActionResult CreateNote (NotesModel notesModel)
+        /// <summary>
+        /// crete note api
+        /// </summary>
+        /// <param name="notesModel"></param>
+        /// <returns></returns>
+        [HttpPost("Create")]
+        public IActionResult CreateNote(NotesModel notesModel)
         {
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var result = noteBL.CreateNote(notesModel,userId);
+                var result = noteBL.CreateNote(notesModel, userId);
                 if (result != null)
                 {
-                    return this.Ok(new { isSuccess = true, message = "created successfull" ,data=result });
+                    return this.Ok(new { isSuccess = true, message = "created successfull", data = result });
                 }
                 else
                     return this.BadRequest(new { isSuccess = false, message = "not created" });
@@ -45,11 +50,12 @@ namespace FundooNotes.Controllers
             }
         }
 
-        /// <summary>
-        /// create for get api 
-        /// </summary>
-       
-        [HttpPost("Get All Note")]
+      /// <summary>
+      /// get all note api
+      /// </summary>
+      /// <returns></returns>
+
+        [HttpGet("Get All")]
         public IActionResult GetAllNote()
         {
             try
@@ -68,57 +74,158 @@ namespace FundooNotes.Controllers
             catch (Exception)
             {
 
-                throw ;
-            }
-            
-        }
-        [HttpDelete("deleteNote")]
-        public IActionResult DeleteNote(long noteId)
-        {
-            try
-            {
-                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var noteDelete = this.fundooContext.NotesTables.Where(x => x.NoteId == noteId).SingleOrDefault();
-                if (noteDelete.Id == userId)
-                {
-                    var result = this.noteBL.DeleteNote(noteId);
-                    if (result == true)
-                    {
-                       return this.Ok(new { isSuccess = true, message = "note  in trash"});
-                    }
-                    else
-                    {
-                        return this.Ok(new { isSuccess =false, message = "note is untrash" });
-                    }
-                }
-                else
-                {
-                    return this.Unauthorized(new { isSuccess = false, message = "unauthorized user" });
-                }
-            }
-            catch (Exception)
-            {
-
                 throw;
             }
 
         }
-        [HttpPatch("UpdateNote")]
-        public IActionResult UpdateNote(Note note)
+        /// <summary>
+        /// single note api
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
+
+        [HttpGet("Get single")]
+        public IActionResult GetSingle(int NoteId)
         {
             try
             {
-                long userId = Convert.ToInt64(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var result = this.noteBL.UpdateNote(note,userId);
-                return this.Ok(new { isSuccess = true, message = "note is updated" });
-                
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                IEnumerable<Note> notesin = this.noteBL.GetSingle(NoteId);
+                return this.Ok(new { isSuccess = true, message = "Data of the Single NoteId", data = NoteId });
             }
             catch (Exception)
             {
-
-                return this.BadRequest(new { isSuccess = false, message = "note failed to update" });
+                return this.BadRequest(new { isSuccess = false, message = "check NoteId" });
             }
         }
-       // [HttpPatch("U")]
+        /// <summary>
+        /// update api
+        /// </summary>
+        /// <param name="notesModel"></param>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
+        [HttpPut("Update")]
+        public IActionResult Update(NotesModel notesModel,long NoteId)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var result = this.noteBL.Update(notesModel,NoteId);
+                return this.Ok(new { isSuccess = true, message = "updated notes", data = NoteId});
+            }
+            catch (Exception)
+            {
+                return this.BadRequest(new { isSuccess = false, message = "note is not updated" });
+               
+            }
+        }
+        /// <summary>
+        /// remove nnote api 
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
+        [HttpDelete("Remove")]
+        public IActionResult RemoveNotes(long NoteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(X => X.Type == "Id").Value);
+                var remove = this.noteBL.RemoveNotes(NoteId);
+                if (remove != null)
+                {
+                    return this.Ok(new { isSuccess = true, message = "Notes Removed Successfully" });
+                }
+                else
+                {
+                    return this.NotFound(new { isSuccess = false, message = " Notes Not Removed" });
+                }
+            }
+            catch (Exception s)
+            {
+                return this.BadRequest(new { Status = 401, isSuccess = false, Message = s.Message, InnerException = s.InnerException });
+            }
+        }
+        /// <summary>
+        /// delete note api
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
+        [HttpDelete("Delete")]
+        public IActionResult Delete(long NoteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var result = this.noteBL.Delete(NoteId);
+                if (result == true)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note has Been Permentely Deleted!", data = result });
+                }
+                if (result == false)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note has been Recovered" });
+                }
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = "Error" });
+            }
+            catch (Exception s)
+            {
+                return this.BadRequest(new { Status = false, Message = s.Message, InnerException = s.InnerException });
+            }
+        }
+        /// <summary>
+        /// archive note api
+        /// </summary>
+        /// <param name="NoteId"></param>
+        /// <returns></returns>
+        [HttpPatch("Archive")]
+        public IActionResult Archive(long NoteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var Archiveresult = this.noteBL.Archive(NoteId);
+                if (Archiveresult == true)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note has been Archived", data = Archiveresult });
+                }
+                if (Archiveresult == false)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note has been Un-Archived" });
+                }
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = "Error" });
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = false, Message = e.Message, InnerException = e.InnerException });
+            }
+        }
+        /// <summary>
+        /// pinned Api
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        [HttpPatch("Pinned")]
+        public IActionResult Pinned(long noteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var result = this.noteBL.Pinned(noteId);
+                if (result == true)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note has been Pinned!", data = result });
+                }
+                if (result == false)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Note has been Un-Pinned" });
+                }
+                return this.BadRequest(new { status = 400, isSuccess = false, Message = "check again note id" });
+            }
+            catch (Exception s)
+            {
+                return this.BadRequest(new { Status = false, Message = s.Message, InnerException = s.InnerException });
+            }
+        }
+
     }
 }

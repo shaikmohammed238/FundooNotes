@@ -66,34 +66,14 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public bool DeleteNote(long noteId)
-        {
-            try
-            {
-                var note=this.fundooContext.NotesTables.Where(x => x.NoteId == noteId).SingleOrDefault();
-                if (note.IsDeleted == true)
-                {
-                    note.IsDeleted = false;
-                    note.IsArrchived = false;
-                    note.IsPinned = false;
-                    fundooContext.SaveChanges();
-                    return false;
-                }
-                else
-                {
-                    note.IsDeleted = true;
-                    note.IsArrchived = false;
-                    note.IsPinned = false;
-                    fundooContext.SaveChanges();
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
+       
 
-                throw;
-            }
-        }
+        /// <summary>
+        /// method for get all note
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+
 
         public IEnumerable<Note>GetAllNote(long userId)
         {
@@ -108,26 +88,17 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public bool UpdateNote(Note note, long userId)
+        /// <summary>
+        /// get single note
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public IEnumerable<Note> GetSingle(long noteId)
         {
+
             try
             {
-                var updatenote = this.fundooContext.NotesTables.Where(x => x.NoteId == note.NoteId).SingleOrDefault();
-                if (updatenote!= null)
-                {
-                    updatenote.Tittle = note.Tittle;
-                    updatenote.Body = note.Body;
-                    updatenote.Colour = note.Colour;
-                    updatenote.ModifiedAt = DateTime.Now;
-                    updatenote.BackImg = note.BackImg;
-                    this.fundooContext.SaveChanges();
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-                
+                return this.fundooContext.NotesTables.ToList().Where(x => x.Id == noteId);
             }
             catch (Exception)
             {
@@ -136,5 +107,159 @@ namespace RepositoryLayer.Services
             }
         }
 
+        
+
+        /// <summary>
+        /// method of update note
+        /// </summary>
+        /// <param name="notesModel"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool Update(NotesModel notesModel,long NoteId)
+        {
+            try
+            {
+                var updateresult = this.fundooContext.NotesTables.Where(x => x.NoteId == notesModel.NoteId).FirstOrDefault();
+                if (updateresult!=null)
+                {
+                    updateresult.Tittle = notesModel.Tittle;
+                    updateresult.Body = notesModel.Body;
+                    updateresult.ModifiedAt = DateTime.Now;
+                    updateresult.BackImg= notesModel.BackImg;
+                    updateresult.Colour = notesModel.Colour;
+                    this.fundooContext.SaveChanges();
+                    return true;
+
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// method of remove notes
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public bool RemoveNotes(long noteId)
+        {
+            try
+            {
+                var removeNote = this.fundooContext.NotesTables.Where(x => x.NoteId == noteId).FirstOrDefault();
+                this.fundooContext.NotesTables.Remove(removeNote);
+                this.fundooContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// method of delete note
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public bool Delete(long noteId)
+        {
+            try
+            {
+                var DeleteNote = this.fundooContext.NotesTables.Where(x => x.NoteId == noteId).FirstOrDefault();
+
+                if (DeleteNote.IsDeleted == false)
+                {
+                    DeleteNote.IsDeleted = true;
+                    this.fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    DeleteNote.IsDeleted = false;
+                    DeleteNote.ModifiedAt = DateTime.Now;
+                    this.fundooContext.NotesTables.Update(DeleteNote);
+                    fundooContext.SaveChanges();
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        /// <summary>
+        /// method of archive
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public bool Archive(long noteId)
+        {
+            try
+            {
+                var Archivemodel = this.fundooContext.NotesTables.Where(x => x.NoteId == noteId).FirstOrDefault();
+
+                if (Archivemodel.IsArrchived == false)
+                {
+                    Archivemodel.IsArrchived = true;
+                    this.fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    Archivemodel.IsArrchived = false;
+                    Archivemodel.ModifiedAt = DateTime.Now;
+                    this.fundooContext.NotesTables.Update(Archivemodel);
+                    this.fundooContext.SaveChanges();
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                {
+                    throw;
+                }
+            }
+        }
+        /// <summary>
+        /// Method of pinned note
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public bool Pinned(long noteId)
+        {
+            try
+            {
+                var PinnedNote = this.fundooContext.NotesTables.Where(x => x.NoteId == noteId).FirstOrDefault();
+
+                if (PinnedNote.IsPinned == false)
+                {
+                    PinnedNote.IsPinned = true;
+                    this.fundooContext.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    PinnedNote.IsPinned = false;
+                    PinnedNote.ModifiedAt = DateTime.Now;
+                    this.fundooContext.NotesTables.Update(PinnedNote);
+                    this.fundooContext.SaveChanges();
+                    return false;
+                }
+            }
+            catch (Exception)
+            {
+                {
+                    throw;
+                }
+            }
+        }
     }
 }

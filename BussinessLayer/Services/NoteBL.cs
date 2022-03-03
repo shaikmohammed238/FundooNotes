@@ -16,6 +16,7 @@ namespace BussinessLayer.Services
             this.noteRL = noteRL;
         }
 
+        //bussiness layer  ofCreateNote
         public Note CreateNote(NotesModel notesModel, long userId)
         {
             try
@@ -27,19 +28,19 @@ namespace BussinessLayer.Services
                 throw;
             }
         }
-
-        public bool DeleteNote( long noteId)
+        //bussiness layer of Delete Note
+        public bool Delete(long noteId)
         {
             try
             {
-                return noteRL.DeleteNote(noteId);
+                return noteRL.Delete(noteId);
             }
             catch (Exception)
             {
                 throw;
             }
         }
-
+        //bussiness layer of GetAllNote
         public IEnumerable<Note> GetAllNote(long userId)
         {
             try
@@ -51,19 +52,66 @@ namespace BussinessLayer.Services
                 throw;
             }
         }
-
-        public bool UpdateNote(Note note, long userId)
+        //bussiness layer of GetSinglenote
+        public IEnumerable<Note> GetSingle(long NoteId)
         {
             try
             {
-                return noteRL.UpdateNote(note,userId);
+                return noteRL.GetSingle(NoteId);
             }
             catch (Exception)
             {
                 throw;
             }
         }
+        //bussiness layer of RemoveNotes
+        public bool RemoveNotes(long noteId)
+        {
+            try
+            {
+                return noteRL.RemoveNotes(noteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        //bussiness layer of update notes
+        public bool Update(NotesModel notesModel, long NoteId)
+        {
+            try
+            {
+                return noteRL.Update(notesModel, NoteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        //bussiness layer of archive 
+        public bool Archive(long noteId)
+        {
+            try
+            {
+                return noteRL.Archive(noteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        //bussiness layer of pinned
+        public bool Pinned(long noteId)
+        {
 
-      
+            try
+            {
+                return noteRL.Pinned(noteId);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
