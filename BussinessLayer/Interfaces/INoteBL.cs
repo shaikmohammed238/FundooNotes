@@ -24,5 +24,7 @@ namespace BussinessLayer.Interfaces
         public bool Archive(long noteId);
         //interface of bussniess layer Pinned Note
         public bool Pinned(long noteId);
+        //interface of bussniess layer Notecolour
+        public string ChangeColour(NotesModel notesModel, long noteId);
     }
 }

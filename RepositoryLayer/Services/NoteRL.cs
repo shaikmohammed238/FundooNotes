@@ -261,5 +261,36 @@ namespace RepositoryLayer.Services
                 }
             }
         }
+        
+        /// <summary>
+        /// method of change colour
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public string ChangeColour(NotesModel notesModel, long noteId)
+        {
+            try
+            {
+                var notecolour = this.fundooContext.NotesTables.Where(x => x.NoteId == noteId).FirstOrDefault();
+
+                if (notecolour != null)
+                {
+                    notecolour.Colour = notesModel.Colour;
+                    fundooContext.NotesTables.Update(notecolour);
+                    this.fundooContext.SaveChanges();
+                    return "colour Changed Successfully";
+                }
+                else
+                {
+                    return "colour not changed";
+                }
+            }
+            catch (Exception)
+            {
+                {
+                    throw;
+                }
+            }
+        }
     }
 }

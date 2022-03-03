@@ -53,5 +53,11 @@ namespace RepositoryLayer.Interface
         /// <param name="noteId"></param>
         /// <returns></returns>
         public bool Pinned(long noteId);
+        /// <summary>
+        /// interface of notescolour reposirory layer
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public string ChangeColour(NotesModel notesModel, long noteId);
     }
 }

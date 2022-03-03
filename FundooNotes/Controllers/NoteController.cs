@@ -50,10 +50,10 @@ namespace FundooNotes.Controllers
             }
         }
 
-      /// <summary>
-      /// get all note api
-      /// </summary>
-      /// <returns></returns>
+        /// <summary>
+        /// get all note api
+        /// </summary>
+        /// <returns></returns>
 
         [HttpGet("Get All")]
         public IActionResult GetAllNote()
@@ -105,18 +105,18 @@ namespace FundooNotes.Controllers
         /// <param name="NoteId"></param>
         /// <returns></returns>
         [HttpPut("Update")]
-        public IActionResult Update(NotesModel notesModel,long NoteId)
+        public IActionResult Update(NotesModel notesModel, long NoteId)
         {
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                var result = this.noteBL.Update(notesModel,NoteId);
-                return this.Ok(new { isSuccess = true, message = "updated notes", data = NoteId});
+                var result = this.noteBL.Update(notesModel, NoteId);
+                return this.Ok(new { isSuccess = true, message = "updated notes", data = NoteId });
             }
             catch (Exception)
             {
                 return this.BadRequest(new { isSuccess = false, message = "note is not updated" });
-               
+
             }
         }
         /// <summary>
@@ -226,6 +226,27 @@ namespace FundooNotes.Controllers
                 return this.BadRequest(new { Status = false, Message = s.Message, InnerException = s.InnerException });
             }
         }
+        [HttpPatch("ChangeColour")]
+        public IActionResult ChangeColour( NotesModel notesModel,long noteId)
+        {
+            try
+            {
+                long userid = Convert.ToInt32(User.Claims.FirstOrDefault(X => X.Type == "Id").Value);
+                var result = this.noteBL.ChangeColour(notesModel, noteId);
+                if (result != null)
+                {
+                    return this.Ok(new { success = true, message = "colour Updated Successful", data = result });
+                }
+                else
+                {
+                    return this.NotFound(new { isSuccess = false, message = "not changedd colour" });
+                }
+            }
+            catch (Exception s)
+            {
+                return this.BadRequest(new { Status = false, Message = s.Message, InnerException = s.InnerException });
+            }
 
-    }
-}
+        }
+    }        
+}       
