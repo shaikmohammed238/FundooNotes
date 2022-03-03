@@ -115,11 +115,11 @@ namespace BussinessLayer.Services
         }
 
         //Bussiness layer of note colour
-        public string ChangeColour(NotesModel notesModel, long noteId)
+        public string ChangeColour(string varColour, long noteId)
         {
             try
             {
-                return noteRL.ChangeColour(notesModel,noteId);
+                return noteRL.ChangeColour(varColour, noteId);
             }
             catch (Exception)
             {
