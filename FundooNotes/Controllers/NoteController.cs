@@ -55,7 +55,7 @@ namespace FundooNotes.Controllers
         /// </summary>
         /// <returns></returns>
 
-        [HttpGet("Get All")]
+        [HttpGet("Get")]
         public IActionResult GetAllNote()
         {
             try
@@ -84,14 +84,14 @@ namespace FundooNotes.Controllers
         /// <param name="NoteId"></param>
         /// <returns></returns>
 
-        [HttpGet("Get single")]
+        [HttpGet("{Id}/Get")]
         public IActionResult GetSingle(int NoteId)
         {
             try
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 IEnumerable<Note> notesin = this.noteBL.GetSingle(NoteId);
-                return this.Ok(new { isSuccess = true, message = "Data of the Single NoteId", data = NoteId });
+                return this.Ok(new { isSuccess = true, message = "Data of the Single NoteId", data = notesin });
             }
             catch (Exception)
             {
@@ -111,7 +111,7 @@ namespace FundooNotes.Controllers
             {
                 long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 var result = this.noteBL.Update(notesModel, NoteId);
-                return this.Ok(new { isSuccess = true, message = "updated notes", data = NoteId });
+                return this.Ok(new { isSuccess = true, message = "updated notes", data = result });
             }
             catch (Exception)
             {
@@ -150,7 +150,7 @@ namespace FundooNotes.Controllers
         /// </summary>
         /// <param name="NoteId"></param>
         /// <returns></returns>
-        [HttpDelete("Delete")]
+        [HttpPut("Delete")]
         public IActionResult Delete(long NoteId)
         {
             try
@@ -260,7 +260,7 @@ namespace FundooNotes.Controllers
         /// <param name="url"></param>
         /// <param name="noteId"></param>
         /// <returns></returns>
-        [HttpPatch("Add Bacground Image")]
+        [HttpPatch("Image")]
         public IActionResult BackImg(IFormFile url, long noteId)
         {
             try

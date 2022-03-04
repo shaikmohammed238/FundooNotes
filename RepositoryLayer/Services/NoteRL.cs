@@ -67,7 +67,7 @@ namespace RepositoryLayer.Services
             catch (Exception)
             { 
 
-                throw;
+                 throw;
             }
         }
 
@@ -103,7 +103,7 @@ namespace RepositoryLayer.Services
 
             try
             {
-                return this.fundooContext.NotesTables.ToList().Where(x => x.Id == noteId);
+                return this.fundooContext.NotesTables.ToList().Where(x => x.NoteId == noteId);
             }
             catch (Exception)
             {
