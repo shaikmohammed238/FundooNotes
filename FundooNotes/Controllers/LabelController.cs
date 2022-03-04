@@ -23,6 +23,12 @@ namespace FundooNotes.Controllers
             this.labelBL = labelBL;
             this.fundooContext = fundooContext;
         }
+
+        /// <summary>
+        /// api of create label 
+        /// </summary>
+        /// <param name="labelModel"></param>
+        /// <returns></returns>
         [HttpPost("Create")]
         public IActionResult CreateLabel(LabelModel labelModel)
         {

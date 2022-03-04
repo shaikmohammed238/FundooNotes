@@ -8,6 +8,7 @@ namespace RepositoryLayer.Interface
 {
     public interface ILabelRL
     {
+        //interface of the repository layer for create label
         public string CreateLabel(LabelModel labelModel);
     }
 }
