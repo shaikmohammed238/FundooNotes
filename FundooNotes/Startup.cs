@@ -30,22 +30,7 @@ namespace FundooNotes
         {
             services.AddDbContext<FundooContext>(opts => opts.UseSqlServer(Configuration["ConnectionString:FundooDB"]));
             services.AddControllers();
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(x =>
-            //{
-            //    x.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
-            //        ValidateIssuer = true,
-            //        ValidateAudience = true,
-            //        ValidIssuer = "localhost",
-            //        ValidAudience = "localhost"
-            //    };
-            //});
+           
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Welcome to FundooNotes" });
@@ -103,6 +88,8 @@ namespace FundooNotes
             services.AddTransient<IUserRL, UserRL>();
             services.AddTransient<INoteBL, NoteBL>();
             services.AddTransient<INoteRL, NoteRL>();
+            services.AddTransient<ICollabrateBL, CollabrateBL>();
+            services.AddTransient<ICollabrateRL, CollabrateRL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
