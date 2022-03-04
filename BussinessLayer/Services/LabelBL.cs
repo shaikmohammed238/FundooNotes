@@ -15,7 +15,11 @@ namespace BussinessLayer.Services
         {
             this.labelRL = labelRL;
         }
-
+        /// <summary>
+        /// create label of bussiness layer
+        /// </summary>
+        /// <param name="labelModel"></param>
+        /// <returns></returns>
         public string CreateLabel(LabelModel labelModel)
         {
             try

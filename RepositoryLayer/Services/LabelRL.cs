@@ -23,6 +23,11 @@ namespace RepositoryLayer.Services
 
         }
 
+        /// <summary>
+        /// method of create label
+        /// </summary>
+        /// <param name="labelModel"></param>
+        /// <returns></returns>
         public string  CreateLabel(LabelModel labelModel)
         {
             try

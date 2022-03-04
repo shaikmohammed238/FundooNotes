@@ -10,6 +10,7 @@ namespace BussinessLayer.Interfaces
 {
     public interface ILabelBL
     {
+        //interface of bussiness layer for create label
         public string CreateLabel(LabelModel labelModel);
     }
 }
