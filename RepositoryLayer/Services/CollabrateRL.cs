@@ -20,19 +20,24 @@ namespace RepositoryLayer.Services
             
 
         }
+        /// <summary>
+        /// mthod for add colobrate
+        /// </summary>
+        /// <param name="collabrateModel"></param>
+        /// <returns></returns>
 
         public bool AddCollabrate(CollabrateModel collabrateModel)
         {
             try
             {
                 var notedata = this.fundooContext.NotesTables.Where(s => s.NoteId == collabrateModel.NoteId).FirstOrDefault();
-                var userdata = this.fundooContext.UserTables.Where(s => s.Email == collabrateModel.CollabeEmail).FirstOrDefault();
+                var userdata = this.fundooContext.UserTables.Where(s => s.Email == collabrateModel.Email).FirstOrDefault();
                 if (notedata != null && userdata != null)
                 {
                     Collabrate collabrateobj = new Collabrate();
                     collabrateobj.Id = userdata.Id;
                     collabrateobj.NoteId = collabrateModel.NoteId;
-                    collabrateobj.CollabeEmail = collabrateModel.CollabeEmail;
+                    collabrateobj.CollabeEmail = collabrateModel.Email;
                     this.fundooContext.CollabratesTables.Add(collabrateobj);
                 }
                 int result = this.fundooContext.SaveChanges();
@@ -52,6 +57,11 @@ namespace RepositoryLayer.Services
             }
         }
 
+        /// <summary>
+        /// method for display  all collabrate
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
         public IEnumerable<Collabrate> DisplayCollabrate(long noteId)
         {
             try
@@ -61,6 +71,33 @@ namespace RepositoryLayer.Services
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+        /// <summary>
+        /// method of Remove collab
+        /// </summary>
+        /// <param name="collabrateModel"></param>
+        /// <returns></returns>
+        public bool RemoveCollabrate(CollabrateModel collabrateModel)
+        {
+            try
+            {
+                var collabvar = this.fundooContext.CollabratesTables.Where(x => x.CollabeEmail == collabrateModel.Email).FirstOrDefault();
+                if (collabvar != null)
+                {
+                    this.fundooContext.CollabratesTables.Remove(collabvar);
+                    this.fundooContext.SaveChangesAsync();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }

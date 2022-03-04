@@ -90,6 +90,8 @@ namespace FundooNotes
             services.AddTransient<INoteRL, NoteRL>();
             services.AddTransient<ICollabrateBL, CollabrateBL>();
             services.AddTransient<ICollabrateRL, CollabrateRL>();
+            services.AddTransient<ILabelBL, LabelBL>();
+            services.AddTransient<ILabelRL, LabelRL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
