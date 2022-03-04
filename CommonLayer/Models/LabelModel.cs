@@ -5,11 +5,11 @@ using System.Text;
 
 namespace CommonLayer.Models
 {
-    public class CollabrateModel
+    public class LabelModel
     {
         [Required]
         public long NoteId { get; set; }
         [Required]
-        public string Email { get; set; }
+        public string LabelName { get; set; }
     }
 }

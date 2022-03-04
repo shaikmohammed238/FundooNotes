@@ -24,6 +24,11 @@ namespace FundooNotes.Controllers
             this.collabrateBL = collabrateBL;
             this.fundooContext = fundooContext;
         }
+        /// <summary>
+        /// api for add colabrate
+        /// </summary>
+        /// <param name="collabrateModel"></param>
+        /// <returns></returns>
 
         [HttpPost("Add")]
         public IActionResult AddCollabrate(CollabrateModel collabrateModel)
@@ -48,6 +53,11 @@ namespace FundooNotes.Controllers
                 return this.NotFound(new { status = 400, isSuccess = false, Message="check email and register in note" });
             }
         }
+        /// <summary>
+        /// api of display all
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
         [HttpGet("Display")]
         public IActionResult DisplayCollabrate(long noteId)
         {
@@ -69,6 +79,36 @@ namespace FundooNotes.Controllers
             {
 
                 throw;
+            }
+        }
+        /// <summary>
+        /// api for remove collabrate
+        /// </summary>
+        /// <param name="collabrateModel"></param>
+        /// <returns></returns>
+        [HttpDelete("Remove")]
+        public IActionResult RemoveCollabrate(CollabrateModel collabrateModel)
+        {
+            try
+            {
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                var collabId = this.fundooContext.CollabratesTables.Where(x=>x.CollabeEmail == collabrateModel.Email).FirstOrDefault();
+                var NoteHolder = this.fundooContext.NotesTables.Where(x => x.NoteId == collabrateModel.NoteId).SingleOrDefault();
+                if (NoteHolder.Id == userId)
+                {
+                    var result = this.collabrateBL.RemoveCollabrate(collabrateModel);
+                    return this.Ok(new { status = 200, isSuccess = true, Message = "Delete collab for user", data = collabrateModel.Email });
+                }
+                else
+                {
+                    return this.NotFound(new { status = 400, isSuccess = false, Message = "Check the collab mail or noteid" });
+                }
+
+            }
+            catch (Exception)
+            {
+
+                return this.BadRequest(new { status = 401, isSuccess = false, Message = "register note before acess collabrate" });
             }
         }
     }
