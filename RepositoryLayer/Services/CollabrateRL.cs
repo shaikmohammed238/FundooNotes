@@ -51,5 +51,18 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+
+        public IEnumerable<Collabrate> DisplayCollabrate(long noteId)
+        {
+            try
+            {
+                return this.fundooContext.CollabratesTables.ToList().Where(x => x.NoteId == noteId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
