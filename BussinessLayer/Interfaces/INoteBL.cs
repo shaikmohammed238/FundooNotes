@@ -9,6 +9,8 @@ namespace BussinessLayer.Interfaces
 {
     public interface INoteBL
     {
+        
+
         //interface of bussniess layer create note
         public Note CreateNote(NotesModel notesModel, long userId);
         //interface of bussniess layer GetAllNote
