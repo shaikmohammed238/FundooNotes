@@ -67,5 +67,6 @@ namespace RepositoryLayer.Interface
         /// <param name="noteId"></param>
         /// <returns></returns>
         public string BackImg(IFormFile url, long noteId);
+        
     }
 }

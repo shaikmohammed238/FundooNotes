@@ -36,7 +36,7 @@ namespace RepositoryLayer.Services
                 newUser.FirstName = userRegModel.FirstName;
                 newUser.LastName = userRegModel.LastName;
                 newUser.Email = userRegModel.Email;
-                newUser.Password = userRegModel.Password;
+                newUser.Password = Encrypt(userRegModel.Password);
                 fundooContext.UserTables.Add(newUser);
                 int result = fundooContext.SaveChanges();
                 if (result > 0)
@@ -52,7 +52,36 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
-
+        /// <summary>
+        /// Encrypt password
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public string Encrypt(string password)
+        {
+            string msg = "";
+            byte[] encode = new byte[password.Length];
+            encode = Encoding.UTF8.GetBytes(password);
+            msg = Convert.ToBase64String(encode);
+            return msg;
+        }
+        /// <summary>
+        /// decript password
+        /// </summary>
+        /// <param name="encryptpass"></param>
+        /// <returns></returns>
+        private string Decrypt(string encryptpass)
+        {
+            string decryptp = string.Empty;
+            UTF8Encoding encodepwd = new UTF8Encoding();
+            Decoder Decode = encodepwd.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encryptpass);
+            int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            decryptp = new String(decoded_char);
+            return decryptp;
+        }
         ///// <summary>
         ///// show only Email
         ///// </summary>
@@ -78,8 +107,9 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                var existingLogin = this.fundooContext.UserTables.Where(X => X.Email == userLog.Email && X.Password == userLog.Password).FirstOrDefault();
-                if (existingLogin != null)
+                var existingLogin = this.fundooContext.UserTables.Where(X => X.Email == userLog.Email).FirstOrDefault();
+
+                if (Decrypt(existingLogin.Password )== userLog.Password)
                 {
                     LoginResponseModel login = new LoginResponseModel();
                     string token = GenerateSecurityToken(existingLogin.Email, existingLogin.Id);
