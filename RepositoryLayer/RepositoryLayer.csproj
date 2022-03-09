@@ -5,19 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20220222161512_First.cs" />
-    <Compile Remove="Migrations\20220222161512_First.Designer.cs" />
-    <Compile Remove="Migrations\20220228071846_Notemig.cs" />
-    <Compile Remove="Migrations\20220228071846_Notemig.Designer.cs" />
-    <Compile Remove="Migrations\20220228074306_Notemig.cs" />
-    <Compile Remove="Migrations\20220228074306_Notemig.Designer.cs" />
-    <Compile Remove="Migrations\20220228075705_Notemig.cs" />
-    <Compile Remove="Migrations\20220228075705_Notemig.Designer.cs" />
-    <Compile Remove="Migrations\20220228085536_Notemig.cs" />
-    <Compile Remove="Migrations\20220228085536_Notemig.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CloudinaryDotNet" Version="1.17.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.14" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
