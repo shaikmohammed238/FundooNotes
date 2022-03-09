@@ -15,5 +15,7 @@ namespace BussinessLayer.Interfaces
         public string ForgetPassword(string email);
         //reset password interface
         public bool ResetPassword(string email, string password, string confirmPassword);
+        //get all users
+        public List<User> GetAllUsers();
     }
 }

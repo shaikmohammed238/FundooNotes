@@ -3,11 +3,16 @@ using CommonLayer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using RepositoryLayer.Context;
 using RepositoryLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -19,10 +24,14 @@ namespace FundooNotes.Controllers
     {
         private readonly ILabelBL labelBL;
         private readonly FundooContext fundooContext;
-        public LabelController(ILabelBL labelBL, FundooContext fundooContext)
+        private readonly IMemoryCache memoryCache;
+        private readonly IDistributedCache distributCache;
+        public LabelController(ILabelBL labelBL, FundooContext fundooContext, IMemoryCache memoryCache, IDistributedCache distributCache)
         {
             this.labelBL = labelBL;
             this.fundooContext = fundooContext;
+            this.memoryCache = memoryCache;
+            this.distributCache = distributCache;
         }
 
         /// <summary>
@@ -109,6 +118,34 @@ namespace FundooNotes.Controllers
 
                 return this.NotFound(new { status = 400, isSuccess = false, Message = "check email and register for display label" });
             }
+        }
+        /// <summary>
+        /// api of get all redis
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Redis")]
+        public async Task<IActionResult> GetAllRedisCache()
+        {
+            var cacheKey = "AllLabel";
+            string serializedAllLabel;
+            var AllLabel = new List<Label>();
+            var redisAllLabel = await distributCache.GetAsync(cacheKey);
+            if (redisAllLabel != null)
+            {
+                serializedAllLabel = Encoding.UTF8.GetString(redisAllLabel);
+                AllLabel = JsonConvert.DeserializeObject<List<Label>>(serializedAllLabel);
+            }
+            else
+            {
+                AllLabel = await fundooContext.LabelTables.ToListAsync();
+                serializedAllLabel = JsonConvert.SerializeObject(AllLabel);
+                redisAllLabel = Encoding.UTF8.GetBytes(serializedAllLabel);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await distributCache.SetAsync(cacheKey, redisAllLabel, options);
+            }
+            return Ok(AllLabel);
         }
         /// <summary>
         /// api for label update 

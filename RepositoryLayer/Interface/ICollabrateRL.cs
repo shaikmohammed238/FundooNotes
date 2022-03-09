@@ -1,11 +1,10 @@
-﻿using CommonLayer.Models;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RepositoryLayer.Interface
+﻿namespace RepositoryLayer.Interface
 {
+    using CommonLayer.Models;
+    using RepositoryLayer.Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     public interface ICollabrateRL
     {
         //interface of repository layer add colabrate

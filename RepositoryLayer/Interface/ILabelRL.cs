@@ -1,11 +1,11 @@
-﻿using CommonLayer.Models;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RepositoryLayer.Interface
+﻿namespace RepositoryLayer.Interface
 {
+    using CommonLayer.Models;
+    using RepositoryLayer.Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     public interface ILabelRL
     {
         //interface of the repository layer for create label

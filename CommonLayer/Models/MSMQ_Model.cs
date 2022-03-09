@@ -34,7 +34,7 @@ namespace CommonLayer.Models
             var message = messageQueue.EndReceive(e.AsyncResult);
             string token = message.Body.ToString();
             string Subject = "Fundoo Notes Reset Link";
-            string Body = token;
+            string Body = "Fundoo Notes Reset password Link:" +token;
             string JWT = DecodeJWT(token);
             var smtpClient = new SmtpClient("smtp.gmail.com")
             {

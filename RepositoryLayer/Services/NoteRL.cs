@@ -1,19 +1,20 @@
-﻿using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
-using CommonLayer.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using RepositoryLayer.Context;
-using RepositoryLayer.Entities;
-using RepositoryLayer.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace RepositoryLayer.Services
 {
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
+    using CommonLayer.Models;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Entities;
+    using RepositoryLayer.Interface;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class NoteRL:INoteRL
     {
         private readonly FundooContext fundooContext;
@@ -339,6 +340,22 @@ namespace RepositoryLayer.Services
                 {
                     return "check note id";
                 }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        /// <summary>
+        /// Method of get all user notes
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Note> GetEveryonesNotes()
+        {
+            try
+            {
+                return fundooContext.NotesTables.ToList();
             }
             catch (Exception)
             {
