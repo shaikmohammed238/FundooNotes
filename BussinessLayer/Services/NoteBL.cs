@@ -139,5 +139,18 @@ namespace BussinessLayer.Services
                 throw;
             }
         }
+        //Bussiness layer of get show all user notes
+
+        public IEnumerable<Note> GetEveryonesNotes()
+        {
+            try
+            {
+                return noteRL.GetEveryonesNotes();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

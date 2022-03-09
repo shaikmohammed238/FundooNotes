@@ -1,12 +1,11 @@
-﻿using CommonLayer.Models;
-using Microsoft.AspNetCore.Http;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RepositoryLayer.Interface
+﻿namespace RepositoryLayer.Interface
 {
+    using CommonLayer.Models;
+    using Microsoft.AspNetCore.Http;
+    using RepositoryLayer.Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     public interface INoteRL
     {
         // noterl interface create note
@@ -67,6 +66,10 @@ namespace RepositoryLayer.Interface
         /// <param name="noteId"></param>
         /// <returns></returns>
         public string BackImg(IFormFile url, long noteId);
-        
+        /// <summary>
+        /// interface of Get all user notes reposirory layer
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Note> GetEveryonesNotes();
     }
 }

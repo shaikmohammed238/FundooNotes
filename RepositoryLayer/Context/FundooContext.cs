@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RepositoryLayer.Context
+﻿namespace RepositoryLayer.Context
 {
+    using System;
+    using Microsoft.EntityFrameworkCore;
+    using RepositoryLayer.Entities;
+    using System.Collections.Generic;
+    using System.Text;
     public class FundooContext:DbContext
     {
         public FundooContext(DbContextOptions options)

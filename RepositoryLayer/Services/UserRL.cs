@@ -1,18 +1,18 @@
-﻿using CommonLayer.Models;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using RepositoryLayer.Context;
-using RepositoryLayer.Entities;
-using RepositoryLayer.Interface;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-
-namespace RepositoryLayer.Services
+﻿namespace RepositoryLayer.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Text;
+    using CommonLayer.Models;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.IdentityModel.Tokens;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Entities;
+    using RepositoryLayer.Interface;
+    
     public class UserRL : IUserRL
     {
         private readonly FundooContext fundooContext;
@@ -193,6 +193,21 @@ namespace RepositoryLayer.Services
             catch (Exception)
             {
 
+                throw;
+            }
+        }
+        /// <summary>
+        /// method of  get all users
+        /// </summary>
+        /// <returns></returns>
+        public List<User> GetAllUsers()
+        {
+            try
+            {
+                return this.fundooContext.UserTables.ToList();
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }

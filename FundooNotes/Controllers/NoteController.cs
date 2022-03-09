@@ -1,17 +1,22 @@
-﻿using BussinessLayer.Interfaces;
-using CommonLayer.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using RepositoryLayer.Context;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace FundooNotes.Controllers
+﻿namespace FundooNotes.Controllers
 {
+    using BussinessLayer.Interfaces;
+    using CommonLayer.Models;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
+    using Microsoft.Extensions.Caching.Memory;
+    using Newtonsoft.Json;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+
+
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
@@ -19,10 +24,14 @@ namespace FundooNotes.Controllers
     {
         private readonly INoteBL noteBL;
         private readonly FundooContext fundooContext;
-        public NoteController(INoteBL noteBL, FundooContext fundooContext)
+        private readonly IMemoryCache memoryCache;
+        private readonly IDistributedCache distributCache;
+        public NoteController(INoteBL noteBL, FundooContext fundooContext, IMemoryCache memoryCache, IDistributedCache distributCache)
         {
             this.noteBL = noteBL;
             this.fundooContext = fundooContext;
+            this.memoryCache = memoryCache;
+            this.distributCache = distributCache;
         }
         /// <summary>
         /// crete note api
@@ -49,6 +58,31 @@ namespace FundooNotes.Controllers
                 throw;
             }
         }
+        /// <summary>
+        /// get all user note api
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("ShowAll")]
+        public IActionResult ShowEveryoneNotes()
+        {
+            try
+            {
+                IEnumerable<Note> note = this.noteBL.GetEveryonesNotes();
+                if (note != null)
+                {
+                    return this.Ok(new { status = 200, isSuccess = true, message = "Successful", data = note });
+                }
+                else
+                {
+                    return this.NotFound(new { status = 404, isSuccess = false, message = "No Notes Found" });
+                }
+            }
+            catch (Exception e)
+            {
+                return this.BadRequest(new { Status = 401, isSuccess = false, Message = e.InnerException.Message });
+            }
+        }
+
 
         /// <summary>
         /// get all note api
@@ -99,6 +133,34 @@ namespace FundooNotes.Controllers
             }
         }
         /// <summary>
+        /// APi of redis get 
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("redis")]
+        public async Task<IActionResult> GetAllNotesUsingRedisCache()
+        {
+            var cacheKey = "NotesList";
+            string serializedNotesList;
+            var notesList = new List<Note>();
+            var redisNotesList = await this.distributCache.GetAsync(cacheKey);
+            if (redisNotesList != null)
+            {
+                serializedNotesList = Encoding.UTF8.GetString(redisNotesList);
+                notesList = JsonConvert.DeserializeObject<List<Note>>(serializedNotesList);
+            }
+            else
+            {
+                notesList = (List<Note>)this.noteBL.GetEveryonesNotes();
+                serializedNotesList = JsonConvert.SerializeObject(notesList);
+                redisNotesList = Encoding.UTF8.GetBytes(serializedNotesList);
+                var options = new DistributedCacheEntryOptions()
+                    .SetAbsoluteExpiration(DateTime.Now.AddMinutes(10))
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(2));
+                await this.distributCache.SetAsync( cacheKey, redisNotesList, options);
+            }
+            return this.Ok(notesList);
+        }
+        /// <summary>
         /// update api
         /// </summary>
         /// <param name="notesModel"></param>
@@ -131,7 +193,7 @@ namespace FundooNotes.Controllers
             {
                 long userid = Convert.ToInt32(User.Claims.FirstOrDefault(X => X.Type == "Id").Value);
                 var remove = this.noteBL.RemoveNotes(NoteId);
-                if (remove != null)
+                if (remove != true)
                 {
                     return this.Ok(new { isSuccess = true, message = "Notes Removed Successfully" });
                 }

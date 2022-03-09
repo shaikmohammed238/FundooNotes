@@ -1,15 +1,16 @@
-﻿using CommonLayer.Models;
-using Microsoft.Extensions.Configuration;
-using RepositoryLayer.Context;
-using RepositoryLayer.Entities;
-using RepositoryLayer.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿
 
 namespace RepositoryLayer.Services
 {
+    using CommonLayer.Models;
+    using Microsoft.Extensions.Configuration;
+    using RepositoryLayer.Context;
+    using RepositoryLayer.Entities;
+    using RepositoryLayer.Interface;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
     public class CollabrateRL:ICollabrateRL
     {
         private readonly FundooContext fundooContext;

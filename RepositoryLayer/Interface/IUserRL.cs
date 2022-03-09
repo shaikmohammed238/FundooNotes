@@ -1,11 +1,10 @@
-﻿using CommonLayer.Models;
-using RepositoryLayer.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RepositoryLayer.Interface
+﻿namespace RepositoryLayer.Interface
 {
+    using CommonLayer.Models;
+    using RepositoryLayer.Entities;
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
     public interface IUserRL
     {
         public User Registration(UserRegModel userRegModel);
@@ -19,6 +18,11 @@ namespace RepositoryLayer.Interface
         public string ForgetPassword(string email);
         //using for reset password
         public bool ResetPassword(string email, string password, string confirmPassword);
+        /// <summary>
+        /// interface of get all users
+        /// </summary>
+        /// <returns></returns>
+        public List<User> GetAllUsers();
 
     }
 }

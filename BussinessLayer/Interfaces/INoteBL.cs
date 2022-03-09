@@ -31,5 +31,7 @@ namespace BussinessLayer.Interfaces
         public string ChangeColour(string varColour, long noteId);
         //interface of bussniess layer add back img
         public string BackImg(IFormFile url, long noteId);
+        //interface of bussniess layer Getall users notes
+        public IEnumerable<Note> GetEveryonesNotes();
     }
 }
